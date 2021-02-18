@@ -14,7 +14,6 @@ def get_markets(df, adm_col="adm0_code"):
     json_arr = {}
 
     for adm in df[adm_col].unique():
-        time.sleep(1)
         print(f"Collecting market locations for adm {adm}...")
         response = requests.get(
             f"https://dataviz.vam.wfp.org/API/GetMarkets?ac={str(int(adm))}"
@@ -40,7 +39,6 @@ def get_exchange_rates(df, name_col="adm0_name"):
     out = pd.DataFrame()  # Empty dataframe to concatenate into.
 
     for adm in df[name_col].unique():
-        time.sleep(1)
         print(f"Collecting exchange rates for {adm}...")
         iso3, _ = Country.get_iso3_country_code_fuzzy(adm)  # Slow.
         url = f"https://vam.wfp.org/API/Get.aspx?q=9&iso3={iso3}"  # q9 forex.
