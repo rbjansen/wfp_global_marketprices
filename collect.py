@@ -52,3 +52,4 @@ def get_latest_data():
 
 if __name__ == "__main__":
     get_latest_data()
+    print("Finished collecting food price data.")

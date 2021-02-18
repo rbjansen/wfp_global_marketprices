@@ -6,4 +6,6 @@ set -e
 echo "Starting collection of WFP data."
 python collect.py
 echo "Extending WFP data with coords and exchange rates."
-python stage.py
+python prepare.py
+echo "Making some maps."
+python plot.py

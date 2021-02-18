@@ -98,9 +98,11 @@ def extend_wfpfp():
     # Clean up produce labels.
     df["cm_name"].apply(lambda x: x.split(" - ")[0])
 
-    return df
+    return df, markets
 
 
 if __name__ == "__main__":
-    print()
-    extend_wfpfp()
+    df, markets = extend_wfpfp()
+    df.to_csv("./data/wfp-food-prices-extended.csv")
+    markets.to_csv("./data/markets.csv")
+    print("Finished extending food price data.")

@@ -27,5 +27,6 @@ def stage_pgm_wfpfp():
 
 
 if __name__ == "__main__":
-    pgm_wfpfp = stage_pgm_wfpfp()
-    pgm_wfpfp.to_csv("./pgm-wfp-food-prices.csv")
+    df = stage_pgm_wfpfp()
+    df.to_csv("./wfp-food-prices-pgm.csv")
+    print("Finished staging food price data.")
