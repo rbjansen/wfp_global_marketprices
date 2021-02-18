@@ -51,5 +51,8 @@ def get_latest_data():
 
 
 if __name__ == "__main__":
-    get_latest_data()
-    print("Finished collecting food price data.")
+    if not os.path.exists("./data/wfp-food-prices.csv"):
+        get_latest_data()
+        print("Finished collecting food price data.")
+    else:
+        print("Found WFP food price data under ./data.")
