@@ -1,5 +1,6 @@
 """Data prep: extend food price data with mkt lon/lat and exchange rates."""
 
+import os
 import time
 import pandas as pd
 import requests
@@ -14,7 +15,7 @@ def get_markets(df, adm_col="adm0_code"):
 
     for adm in df[adm_col].unique():
         time.sleep(1)
-        print(f"Collecting markets for {adm}...")
+        print(f"Collecting market locations for adm {adm}...")
         response = requests.get(
             f"https://dataviz.vam.wfp.org/API/GetMarkets?ac={str(int(adm))}"
         )
@@ -73,7 +74,7 @@ def get_exchange_rates(df, name_col="adm0_name"):
 
 
 def extend_wfpfp():
-    """Fetch wfpvam from HDX. TODO"""
+    """Fetch WFP global food prices from HDX."""
 
     df = pd.read_csv("./data/wfp-food-prices.csv")
     df = df.loc[df.mkt_name != "National Average"]
@@ -102,7 +103,10 @@ def extend_wfpfp():
 
 
 if __name__ == "__main__":
-    df, markets = extend_wfpfp()
-    df.to_csv("./data/wfp-food-prices-extended.csv")
-    markets.to_csv("./data/markets.csv")
-    print("Finished extending food price data.")
+    if not os.path.exists("./data/wfp-food-prices-extended.csv"):
+        df, markets = extend_wfpfp()
+        df.to_csv("./data/wfp-food-prices-extended.csv")
+        markets.to_csv("./data/markets.csv")
+        print("Finished extending food price data.")
+    else:
+        print("Found extended data under ./data.")
