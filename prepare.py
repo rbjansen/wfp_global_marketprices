@@ -10,7 +10,7 @@ from hdx.location.country import Country
 def get_markets(df, adm_col="adm0_code"):
     """Fetch market features from VAM WFP API."""
 
-    json_arr = {}
+    markets = {}
 
     for adm in df[adm_col].unique():
         print(f"Collecting market locations for adm {adm}...")
@@ -21,12 +21,12 @@ def get_markets(df, adm_col="adm0_code"):
         for region in output:
             if region["text"] != "National Average":
                 for mkt in region["items"]:
-                    json_arr[int(mkt["id"].replace("mk", ""))] = {
+                    markets[int(mkt["id"].replace("mk", ""))] = {
                         "lat": mkt["lat"],
                         "lon": mkt["lon"],
                     }
 
-    out = pd.DataFrame(json_arr).T
+    out = pd.DataFrame(markets).T
     out.index.name = "mkt_id"
 
     return out
