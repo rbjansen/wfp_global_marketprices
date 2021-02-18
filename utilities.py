@@ -1,12 +1,13 @@
-""" Data utilities. """
+"""Data utilities."""
 
+import numpy as np
 
 def latlon_to_gid(lat, lon):
     """ Get gid from lat/lon. """
     lat_component =  ((((90 + (np.floor(lat * 2) / 2)) * 2) + 1) - 1) * 720
     lon_component =  ((180 + (np.floor(lon * 2) / 2)) * 2)
     gid = lat_component + lon_component + 1
-    return gid
+    return gid.astype(int)
     
 
 def ym_to_month_id(year, month):
