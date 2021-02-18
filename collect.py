@@ -5,6 +5,8 @@ import pandas as pd
 import requests
 from hdx.location.country import Country
 
+from utilities import latlon_to_gid, ym_to_month_id
+
 
 # TODO: write fetcher.
 countries = pd.read_csv("/Users/rbjansen/Downloads/adm0code.csv")
@@ -82,7 +84,7 @@ def get_exchange_rates(df, name_col="adm0_name"):
     return out
 
 
-def fetch_wfpvam():
+def stage_wfpvam():
     """Fetch wfpvam from HDX. TODO"""
     df = pd.read_csv("/Users/rbjansen/Downloads/wfpvam_foodprices.csv")
     df = df.loc[df.mkt_name != "National Average"]
@@ -101,10 +103,17 @@ def fetch_wfpvam():
         how="left"
     )
 
+    # Clean up produce labels.
+    df["cm_name"].apply(lambda x: x.split(" - ")[0])
+
+    # Get month_id and pg_id in.
+    df["pg_id"] = latlon_to_gid(df["lat"], df["lon"]) 
+    df["month_id"] = ym_to_month_id(df["mp_year"], df["mp_month"])
+
     return df
 
 
 if __name__ == "__main__":
-    df = fetch_wfpvam()
+    df = stage_wfpvam()
     df.to_csv("./vam.csv")
     
