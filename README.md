@@ -1,5 +1,5 @@
 # WFP global market food prices
 
-Collects WFP global market food prices and extends it with market coordinates as well as national current exchange rates (month median). Includes staging to `cm` and `pgm`, along with some maps.
+Collects WFP global market food price data and extends that with market coordinates as well as national current exchange rates (month median).
 
-`./run.sh` to start this up. It takes a few minutes to collect the market locations and exchange rates from the WFP's API.
+Set up a virtualenv and `pip install -r requirements.txt`. After that, `./run.sh` to start this up. It takes a few minutes to collect the market locations and exchange rates from the WFP's API.
