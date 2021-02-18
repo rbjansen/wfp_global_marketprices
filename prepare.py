@@ -4,7 +4,6 @@ import os
 import time
 import pandas as pd
 import requests
-
 from hdx.location.country import Country
 
 
@@ -20,7 +19,7 @@ def get_markets(df, adm_col="adm0_code"):
         )
         output = response.json()
         for region in output:
-            if region["text"] != "National Average":  # TODO.
+            if region["text"] != "National Average":
                 for mkt in region["items"]:
                     json_arr[int(mkt["id"].replace("mk", ""))] = {
                         "lat": mkt["lat"],
@@ -40,7 +39,7 @@ def get_exchange_rates(df, name_col="adm0_name"):
 
     for adm in df[name_col].unique():
         print(f"Collecting exchange rates for {adm}...")
-        iso3, _ = Country.get_iso3_country_code_fuzzy(adm)  # Slow.
+        iso3, _ = Country.get_iso3_country_code_fuzzy(adm)
         url = f"https://vam.wfp.org/API/Get.aspx?q=9&iso3={iso3}"  # q9 forex.
         response = requests.get(url)
 
@@ -75,8 +74,6 @@ def extend_wfpfp():
     """Fetch WFP global food prices from HDX."""
 
     df = pd.read_csv("./data/wfp-food-prices.csv")
-    df = df.loc[df.mkt_name != "National Average"]
-
     countries = pd.read_csv("./data/wfp-countries.csv")
     countries.columns = [col.lower() for col in countries]
 
@@ -94,7 +91,7 @@ def extend_wfpfp():
         how="left",
     )
 
-    # Clean up produce labels.
+    # Clean up commodity labels.
     df["cm_name"].apply(lambda x: x.split(" - ")[0])
 
     return df, markets
