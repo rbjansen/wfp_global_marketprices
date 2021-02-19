@@ -92,7 +92,12 @@ def extend_wfpfp():
     )
 
     # Clean up commodity labels.
-    df["cm_name"].apply(lambda x: x.split(" - ")[0])
+    df["cm_name"] = df["cm_name"].apply(lambda x: x.split(" - ")[0])
+
+    # Add isoab.
+    df["isoab"] = df["adm0_name"].apply(
+        lambda x: Country.get_iso3_country_code_fuzzy(x)[0]
+    )
 
     return df, markets
 
